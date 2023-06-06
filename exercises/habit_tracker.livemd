@@ -149,7 +149,8 @@ points = small + medium
 Enter your answer below.
 
 ```elixir
-percentageGoalMet = (small + medium) / 40 * 100
+goal = 40
+percentageGoalMet = (small + medium) / goal * 100
 ```
 
 ## Penalties And Rewards
@@ -178,16 +179,13 @@ Enter your answer below.
 ```elixir
 [early, normal, late] = [1.6, 1, 0.5]
 
-# timeBP = fn
-#   early -> 1.6
-#   normal -> 1
-#   late -> 0.5
-# end
-
 habitList = [{small, early, 3}, {medium, normal, 2}, {large, late, 2}]
 
+# Enum.map([1,2,3], fn x -> x + 2 end) ------> [3,4,5] 
+
 Enum.reduce(habitList, 0, fn {size, time, num}, acc ->
-  size * num * time + acc
+  habitScore = size * num * time
+  habitScore + acc
 end)
 ```
 
