@@ -125,7 +125,6 @@ Enter your solution below.
 ```elixir
 mealCost = 20
 desiredTip = 15
-
 totalMealCost = mealCost * (1 + desiredTip / 100)
 ```
 
@@ -153,7 +152,9 @@ Enter your solution below.
 a = 4
 b = 10
 cSquaredManual = a * a + b * b
-cSquared = :math.pow(a, 2) + :math.pow(b, 2)
+square = &:math.pow(&1, 2)
+square.(4)
+cSquared = trunc(:math.pow(a, 2) + :math.pow(b, 2))
 ```
 
 ## Bonus: Square Root
