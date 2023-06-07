@@ -59,7 +59,11 @@ shopping_cart = shopping_cart ++ ["banana", "banana", "banana"]
 Enter your solution below.
 
 ```elixir
-
+sc = []
+sc = sc ++ ["grapes", "walnuts", "apples"]
+sc = sc ++ ["blueberries", "chocolate", "pizza"]
+sc = sc -- ["grapes", "walnuts"]
+sc = sc ++ ["banana", "banana", "banana"]
 ```
 
 ## Text Shopping List With Quantities
@@ -91,7 +95,11 @@ shopping_cart = shopping_cart ++ [candies: 5]
 </details>
 
 ```elixir
-
+sc = [milk: 1, eggs: 12]
+sc = sc ++ [bars_of_butter: 2, candies: 10]
+sc = sc -- [bars_of_butter: 2]
+sc = Keyword.put(sc, :candies, 5)
+# this will place candies at the head of list. Hmmm
 ```
 
 ## Commit Your Progress
