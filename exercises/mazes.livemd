@@ -274,13 +274,15 @@ treasure_map = %{
   }
 }
 
-Kernel.put_in(
-  treasure_map,
-  ["south ten paces", 10, :"east three paces", [1, 2, 3], {"turn", "right"}, :dig],
-  "taken"
-)
+treasure_map2 =
+  Kernel.put_in(
+    treasure_map,
+    ["south ten paces", 10, :"east three paces", [1, 2, 3], {"turn", "right"}, :dig],
+    "taken"
+  )
 
-treasure_map["south ten paces"][10][:"east three paces"][[1, 2, 3]][{"turn", "right"}].dig
+treasure_map2
+# treasure_map["south ten paces"][10][:"east three paces"][[1,2,3]][{"turn","right"}].dig
 ```
 
 ## Bonus: Pattern Matching
