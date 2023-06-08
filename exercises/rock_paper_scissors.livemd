@@ -66,7 +66,23 @@ Then, return the winning choice of either `:rock`, `:paper`, or `:scissors` that
 Enter your solution below.
 
 ```elixir
+prs_options = [:paper, :rock, :scissors]
 
+play_prs_single_ai = fn choice ->
+  win_messsage = "gotcha. play again?"
+
+  if choice not in [:paper, :rock, :scissors] do
+    "that wasn't a choice. try again."
+  else
+    case choice do
+      :paper -> {:scissors, win_messsage}
+      :rock -> {:paper, win_messsage}
+      :scissors -> {:rock, win_messsage}
+    end
+  end
+end
+
+play_prs_single_ai.(:rock)
 ```
 
 ## Create Two Player Rock Paper Scissors
@@ -119,7 +135,22 @@ Bind a `player1_choice` and `player2_choice` variable to `:rock`, `:paper`, or `
 Enter your solution below.
 
 ```elixir
+player1_choice = Enum.random(prs_options)
+player2_choice = Enum.random(prs_options)
 
+play_prs_double_ai = fn iteration ->
+  case iteration do
+    {a, a} -> "Draw"
+    {:paper, :scissors} -> "scissors wins!"
+    {:scissors, :paper} -> "scissors wins!"
+    {:rock, :scissors} -> "rock wins!"
+    {:scissors, :rock} -> "rock wins!"
+    {:paper, :rock} -> "paper wins!"
+    {:rock, :paper} -> "paper wins!"
+  end
+end
+
+play_prs_double_ai.({:paper, :scissors})
 ```
 
 ## Commit Your Progress
