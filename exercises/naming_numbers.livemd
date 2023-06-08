@@ -84,7 +84,45 @@ naming_numbers.(1)
 Enter your solution below.
 
 ```elixir
+nums = %{
+  0 => "zero",
+  1 => "one",
+  2 => "two",
+  3 => "three",
+  4 => "four",
+  5 => "five",
+  6 => "six",
+  7 => "seven",
+  8 => "eight",
+  9 => "nine",
+  10 => "ten"
+}
 
+naming_numbers = fn n ->
+  # case n do
+  #   0 -> "zero"
+  #   1 -> "one"
+  #   2 -> "two"
+  #   3 -> "three"
+  #   4 -> "four"
+  #   5 -> "five"
+  #   6 -> "six"
+  #   7 -> "seven"
+  #   8 -> "eight"
+  #   9 -> "nine"
+  #   10 -> "ten"
+  #   _ when is_binary(n) -> "gimme a number bozo"
+  #   _ -> "not in list"
+  # end
+  case Map.get(nums, n) do
+    val -> val
+    nil -> "not found"
+  end
+end
+
+naming_numbers.("blah")
+# naming_numbers.(1)
+# naming_numbers.(10)
 ```
 
 ## Numbering Names
@@ -181,7 +219,19 @@ flowchart
 </details>
 
 ```elixir
+numbering_names = fn name ->
+  val =
+    Map.to_list(nums)
+    |> Enum.filter(fn {k, v} -> v == name end)
 
+  case val do
+    [{n, _}] -> n
+    _ -> "either not found or not a string"
+  end
+end
+
+numbering_names.("one")
+numbering_names.("twenty")
 ```
 
 ## Commit Your Progress
