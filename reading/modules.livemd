@@ -120,7 +120,15 @@ end
 Call the `MutliParamExample.call/3` function with different arguments.
 
 ```elixir
+MultiParamExample.call(1, 2, 3)
 
+MultiParamExample.call(
+  (fn -> "one" end).(),
+  self(),
+  Enum.random(1..100)
+)
+
+# MultiParamExample.call(1,2,3)
 ```
 
 ## Internal Module Functions
@@ -318,7 +326,13 @@ end
 Enter your solution below.
 
 ```elixir
+defmodule Languages.German do
+  def greeting do
+    "Guten Tag"
+  end
+end
 
+Languages.German.greeting()
 ```
 
 ### Nested Modules
@@ -357,8 +371,8 @@ We use the `@` symbol to define a compile-time module attribute.
 
 ```elixir
 defmodule Hero do
-  @name "Spider-Man"
-  @nemesis "Green Goblin"
+  @name "Batman"
+  @nemesis "Scarecrow"
 
   def introduce do
     "Hello, my name is #{@name}!"
@@ -516,7 +530,19 @@ end
 </details>
 
 ```elixir
+defmodule Math do
+  @moduledoc """
+    Provides various math utility functions
+  """
 
+  @doc "Add two numbers"
+  def add(n1, n2), do: n1 + n2
+  @doc "Add three numbers"
+  def add(n1, n2, n3), do: Enum.sum([n1, n2, n3])
+end
+
+Math.add(2, 9)
+Math.add(2, 9, 1)
 ```
 
 ## Default Arguments
@@ -583,7 +609,12 @@ Greeting.hello("Andrew")
 ```
 
 ```elixir
+defmodule Greeting do
+  def hello(name \\ "there"), do: "Hello #{name}!"
+end
 
+Greeting.hello("Frank")
+Greeting.hello()
 ```
 
 ## Documentation
@@ -668,7 +699,7 @@ defmodule DoctestFailure do
     "expected return value"
   """
   def test do
-    "actual return value"
+    "expected return value"
   end
 end
 ```
