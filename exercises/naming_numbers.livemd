@@ -229,7 +229,7 @@ numbering_names = fn name ->
 
   case val do
     [{n, _}] -> n
-    _ -> "either not found or not a string"
+    _ -> "Dang, either not found or not a string"
   end
 end
 
