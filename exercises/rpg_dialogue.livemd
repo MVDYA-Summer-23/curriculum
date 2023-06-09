@@ -91,14 +91,15 @@ defmodule Character do
   Defines a character struct, and functions for creating character dialogue.
 
   iex> %Character{name: "Frodo"}
-  %Character{name: "Frodo", weapon: nil, class: nil}
+  %Character{name: "Frodo", weapon: "fierce weapon", class: "fighter"}
 
   The :name key is required.
 
   iex> %Character{name: "Frodo"}
   ** (ArgumentError) the following keys must also be given when building struct Character: [:name]
   """
-  defstruct []
+  @enforcekeys [:name]
+  defstruct @enforcekeys ++ [class: "fighter", weapon: "fierce weapon"]
 
   @doc """
   Introduce the character by name.
@@ -111,7 +112,8 @@ defmodule Character do
     iex> Character.introduce(%Character{name: "Aragorn"})
     "My name is Aragorn."
   """
-  def introduce(character) do
+  def introduce(character = %Character{}) do
+    "My name is #{character.name}."
   end
 
   @doc """
@@ -125,7 +127,8 @@ defmodule Character do
     iex> Character.attack(%Character{name: "Aragorn", weapon: "sword"})
     "I attack with my sword!"
   """
-  def attack(character) do
+  def attack(character = %Character{}) do
+    "I attack with my #{character.weapon}!"
   end
 
   @doc """
@@ -139,7 +142,8 @@ defmodule Character do
     iex> Character.class(%Character{name: "Aragorn", class: "ranger"})
     "I am a ranger."
   """
-  def class(character) do
+  def class(character = %Character{}) do
+    "I am a #{character.class}."
   end
 
   @doc """
@@ -153,7 +157,8 @@ defmodule Character do
     iex> Character.war_cry(%Character{name: "Aragorn", class: "ranger"})
     "My name is Aragorn and I am a ranger!"
   """
-  def war_cry(character) do
+  def war_cry(character = %Character{}) do
+    "My name is #{character.name} and I am a #{character.class}!"
   end
 
   @doc """
@@ -167,7 +172,8 @@ defmodule Character do
     iex> Character.defeat(%Character{name: "Aragorn"}, %Character{name: "Gimli", class: "warrior"})
     "My name is Aragorn and I have defeated the warrior Gimli!"
   """
-  def defeat(character1, character2) do
+  def defeat(character1 = %Character{}, character2 = %Character{}) do
+    "My name is #{character1.name} and I have defeated the #{character2.class} #{character2.name}!"
   end
 end
 ```
@@ -214,7 +220,12 @@ Character.introduce(aragorn)
 Enter your solution below.
 
 ```elixir
-
+aragorn = %Character{name: "Aragorn", class: "ranger", weapon: "sword"}
+Character.attack(aragorn)
+wizard = %Character{name: "Gandalf", class: "wizard", weapon: "staff"}
+Character.class(wizard)
+gimli = %Character{name: "Gimli", class: "warrior", weapon: "axe"}
+Character.introduce(gimli)
 ```
 
 ## Commit Your Progress
