@@ -98,8 +98,8 @@ defmodule Character do
   iex> %Character{name: "Frodo"}
   ** (ArgumentError) the following keys must also be given when building struct Character: [:name]
   """
-  @enforcekeys [:name]
-  defstruct @enforcekeys ++ [class: "fighter", weapon: "fierce weapon"]
+  @enforce_keys [:name]
+  defstruct @enforce_keys ++ [class: "fighter", weapon: "fierce weapon"]
 
   @doc """
   Introduce the character by name.
@@ -221,7 +221,6 @@ Enter your solution below.
 
 ```elixir
 aragorn = %Character{name: "Aragorn", class: "ranger", weapon: "sword"}
-Character.attack(aragorn)
 wizard = %Character{name: "Gandalf", class: "wizard", weapon: "staff"}
 Character.class(wizard)
 gimli = %Character{name: "Gimli", class: "warrior", weapon: "axe"}
