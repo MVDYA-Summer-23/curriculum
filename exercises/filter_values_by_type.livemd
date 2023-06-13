@@ -98,7 +98,8 @@ defmodule Filter do
     iex> Filter.integers([1, 2, %{}, {}, []])
     [1, 2]
   """
-  def integers(list) do
+  def integers(list) when is_list(list) do
+    Enum.filter(list, &is_integer(&1))
   end
 
   @doc """
@@ -109,7 +110,8 @@ defmodule Filter do
     iex> Filter.floats([1, 2, %{}, {}, [], 1.2, 3.2])
     [1.2, 3.2]
   """
-  def floats(list) do
+  def floats(list) when is_list(list) do
+    Enum.filter(list, &is_float(&1))
   end
 
   @doc """
@@ -120,7 +122,8 @@ defmodule Filter do
     iex> Filter.numbers([1, 2, %{}, {}, [], 1.2, 3.2])
     [1, 2, 1.2, 3.2]
   """
-  def numbers(list) do
+  def numbers(list) when is_list(list) do
+    Enum.filter(list, fn n -> is_integer(n) || is_float(n) end)
   end
 
   @doc """
@@ -131,7 +134,8 @@ defmodule Filter do
     iex> Filter.atoms([1, 2, %{}, {}, [], :first_atom, 1.2, 3.2, :second_atom])
     [:first_atom, :second_atom]
   """
-  def atoms(list) do
+  def atoms(list) when is_list(list) do
+    Enum.filter(list, &is_atom(&1))
   end
 
   @doc """
@@ -142,7 +146,8 @@ defmodule Filter do
     iex> Filter.lists([1, 2, %{}, {}, [], 1.2, 3.2, :atom, [1, 2], [4, 5, 6]])
     [[], [1, 2], [4, 5, 6]]
   """
-  def lists(list) do
+  def lists(list) when is_list(list) do
+    Enum.filter(list, &is_list(&1))
   end
 
   @doc """
@@ -153,7 +158,8 @@ defmodule Filter do
     iex> Filter.maps([1, 2, %{}, {}, [], 1.2, 3.2, :atom, %{key: "value"}])
     [%{}, %{key: "value"}]
   """
-  def maps(list) do
+  def maps(list) when is_list(list) do
+    Enum.filter(list, &is_map(&1))
   end
 
   @doc """
@@ -161,10 +167,16 @@ defmodule Filter do
 
   ## Examples
 
-    iex> Filter.keyword_lists([1, 2, %{}, {}, [], 1.2, 3.2, :atom, %{key: "value"}, [key: "value"]])
-    [[], [key: "value"]]
+    iex> Filter.keyword_lists([["s"],1 , 2, %{}, {}, [], 1.2, 3.2, :atom, %{key: "value"}, [key: "value"]])
+    [[key: "value"]]
   """
-  def keyword_lists(list) do
+  def keyword_lists(list) when is_list(list) do
+    Enum.filter(list, fn each ->
+      case each do
+        [h | _t] -> is_tuple(h)
+        _ -> false
+      end
+    end)
   end
 end
 ```
