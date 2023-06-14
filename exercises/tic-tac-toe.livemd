@@ -156,12 +156,17 @@ defmodule TicTacToe do
       ...> ]
       iex> TicTacToe.at(board, {0, 0})
       "G"
-      iex> TicTacToe.at(board, {2, 1})
+      iex> TicTacToe.at(board, {1, 2})
       "F"
-      iex> TicTacToe.at(board, {0, 2})
+      iex> TicTacToe.at(board, {2, 0})
       "A"
   """
-  def at(board, coordinate) do
+  def at([a, b, c], {row, col}) do
+    case row do
+      0 -> Enum.at(c, col)
+      1 -> Enum.at(b, col)
+      2 -> Enum.at(a, col)
+    end
   end
 
   @doc """
@@ -179,9 +184,114 @@ defmodule TicTacToe do
       iex> TicTacToe.fill(board, {1, 1}, "O")
       [[nil, nil, nil], [nil, "O", nil], [nil, nil, nil]]
   """
-  def fill(board, coordinate, symbol) do
+
+  def fill([a, b, c] = board, {row, col} = coordinate, symbol) do
+    if at(board, coordinate) !== nil do
+      {:error, "That square is already filled. Try another one."}
+    else
+      case row do
+        0 -> [a, b, List.replace_at(c, col, symbol)]
+        1 -> [a, List.replace_at(c, col, symbol), c]
+        2 -> [List.replace_at(c, col, symbol), b, c]
+      end
+    end
+  end
+
+  # Helper function for unsuccessful attempt at winner function definition
+  # defp check_winner(board, player) do
+  #   row_winner = Enum.any?(board, fn row ->
+  #     Enum.all?(row, fn square ->
+  #       square == player
+  #     end)
+  #   end)
+  # end
+
+  @doc """
+  Determine if a player has won the game.
+
+  ## Examples
+
+    Row Wins:
+
+    iex> TicTacToe.winner([["X", "X", "X"], [nil, nil, nil], [nil, nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, nil], ["X", "X", "X"], [nil, nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, nil], [nil, nil, nil], ["X", "X", "X"]])
+    "X"
+
+    Column Wins:
+
+    iex> TicTacToe.winner([["X", nil, nil], ["X", nil, nil], ["X", nil, nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, "X", nil], [nil, "X", nil], [nil, "X", nil]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, "X"], [nil, nil, "X"], [nil, nil, "X"]])
+    "X"
+
+    Diagonal Wins
+
+    iex> TicTacToe.winner([["X", nil, nil], [nil, "X", nil], [nil, nil, "X"]])
+    "X"
+    iex> TicTacToe.winner([[nil, nil, "X"], [nil, "X", nil], ["X", nil, nil]])
+    "X"
+
+    No Winner
+
+    iex> TicTacToe.winner([[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]])
+    nil
+    iex> TicTacToe.winner([[nil, "X", nil], [nil, "X", nil], [nil, nil, nil]])
+    nil
+
+  """
+  def winner(board) do
+    # First attempt using a private function. 
+    # Enum.find(["X", "O"], &check_winner(board, &1))
+
+    # Official solution, first option
+    cond do
+      winner?(board, "X") -> "X"
+      winner?(board, "O") -> "O"
+      true -> nil
+    end
+  end
+
+  def winner?(board, symbol) do
+    row_winner =
+      Enum.any?(board, fn row ->
+        Enum.all?(row, fn element -> element == symbol end)
+      end)
+
+    column_winner =
+      Enum.any?(0..2, fn index ->
+        Enum.all?(board, fn row ->
+          Enum.at(row, index) == symbol
+        end)
+      end)
+
+    diagonal_winner =
+      Enum.all?(0..2, fn index ->
+        board
+        |> IO.inspect(label: "board")
+        |> Enum.at(index)
+        |> IO.inspect(label: "row")
+        |> Enum.at(index) == symbol
+      end) or
+        Enum.all?(0..2, fn index ->
+          board
+          |> IO.inspect(label: "board")
+          |> Enum.at(index)
+          |> IO.inspect(label: "row")
+          |> Enum.at(2 - index) == symbol
+        end)
+
+    row_winner or column_winner or diagonal_winner
   end
 end
+
+# TicTacToe.winner([["X", nil, nil], [nil, "X", nil], [nil, nil, "X"]])
+# TicTacToe.winner([["O", "O", "O"], [nil, nil, nil], [nil, nil, nil]])
+# TicTacToe.winner([[nil, nil, nil], [nil, nil, nil], [nil, nil, nil]])
 ```
 
 ### Bonus: Winner
