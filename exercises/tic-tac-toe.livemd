@@ -161,11 +161,11 @@ defmodule TicTacToe do
       iex> TicTacToe.at(board, {2, 0})
       "A"
   """
-  def at([a, b, c], {row, col}) do
+  def at([row1, row2, row3] = _board, {row, col} = _coordinate) do
     case row do
-      0 -> Enum.at(c, col)
-      1 -> Enum.at(b, col)
-      2 -> Enum.at(a, col)
+      0 -> Enum.at(row3, col)
+      1 -> Enum.at(row2, col)
+      2 -> Enum.at(row1, col)
     end
   end
 
@@ -185,14 +185,14 @@ defmodule TicTacToe do
       [[nil, nil, nil], [nil, "O", nil], [nil, nil, nil]]
   """
 
-  def fill([a, b, c] = board, {row, col} = coordinate, symbol) do
+  def fill([row1, row2, row3] = board, {row, col} = coordinate, symbol) do
     if at(board, coordinate) !== nil do
       {:error, "That square is already filled. Try another one."}
     else
       case row do
-        0 -> [a, b, List.replace_at(c, col, symbol)]
-        1 -> [a, List.replace_at(c, col, symbol), c]
-        2 -> [List.replace_at(c, col, symbol), b, c]
+        0 -> [row1, row2, List.replace_at(row3, col, symbol)]
+        1 -> [row1, List.replace_at(row2, col, symbol), row3]
+        2 -> [List.replace_at(row1, col, symbol), row2, row3]
       end
     end
   end
@@ -272,16 +272,16 @@ defmodule TicTacToe do
     diagonal_winner =
       Enum.all?(0..2, fn index ->
         board
-        |> IO.inspect(label: "board")
+        # |> IO.inspect(label: "board")
         |> Enum.at(index)
-        |> IO.inspect(label: "row")
+        # |> IO.inspect(label: "row")
         |> Enum.at(index) == symbol
       end) or
         Enum.all?(0..2, fn index ->
           board
-          |> IO.inspect(label: "board")
+          # |> IO.inspect(label: "board")
           |> Enum.at(index)
-          |> IO.inspect(label: "row")
+          # |> IO.inspect(label: "row")
           |> Enum.at(2 - index) == symbol
         end)
 
