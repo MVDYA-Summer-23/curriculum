@@ -125,12 +125,41 @@ end
 
 ```elixir
 defmodule Products do
+  @doc "generates 300 items"
   def all_items do
+    for item <- ["computer", "phone", "tablet"] do
+      for _ <- 1..100 do
+        %{product: item, price: Enum.random(1..100)}
+      end
+    end
+    |> List.flatten()
   end
 
+  @doc "get products based on min/max price and product type"
   def search(items, filters) do
+    filter_keys = Keyword.keys(filters)
+
+    Enum.reduce(items, [], fn item, acc ->
+      if Enum.all?(filter_keys, fn filter ->
+           value = filters[filter]
+
+           case filter do
+             :min -> item.price >= value
+             :max -> item.price <= value
+             :name -> item.name == value
+           end
+         end) do
+        [item | acc]
+      else
+        acc
+      end
+    end)
+    |> Enum.reverse()
   end
 end
+
+all_items = Products.all_items()
+Products.search(all_items, min: 45, max: 50)
 ```
 
 ## Commit Your Progress
