@@ -83,23 +83,45 @@ defmodule Anagram do
     true
   """
   def anagram?(word, possible_anagram) do
+    # 1st Working Approach
+    # FLAWED: Doesn't ensure letters are used the same number of times in each word
+    # "abb" !== "aab"
+
+    # [word1, word2] =
+    #   for each <- [word, possible_anagram] do
+    #     String.split(each, "", trim: true) |> Enum.sort()
+    #   end
+
+    # word1 == word2
+
+    # 2nd Working Approach
+    if length(word) == length(possible_anagram) do
+      possible_anagram = String.split(possible_anagram, "", trim: true)
+
+      Enum.all?(String.split(word, "", trim: true), fn letter ->
+        letter in possible_anagram
+      end)
+    else
+      false
+    end
   end
 
-  @doc """
-  Filter anagrams.
+  # @doc """
+  # Filter anagrams.
 
-  ## Examples
+  # ## Examples
 
-    iex> Anagram.filter_anagrams(["abc", "bca", "abcd", "cat"], "bac")
-    ["abc", "bca"]
+  #   iex> Anagram.filter_anagrams(["abc", "bca", "abcd", "cat"], "bac")
+  #   ["abc", "bca"]
 
-    iex> Anagram.filter_anagrams(["rams", "mars", "arms", "alarms"], "arms")
-    ["rams", "mars", "arms"]
+  #   iex> Anagram.filter_anagrams(["rams", "mars", "arms", "alarms"], "arms")
+  #   ["rams", "mars", "arms"]
 
-    iex> Anagram.filter_anagrams(["stop"], "go")
-    []
-  """
+  #   iex> Anagram.filter_anagrams(["stop"], "go")
+  #   []
+  # """
   def filter_anagrams(word_list, anagram) do
+    Enum.filter(word_list, &anagram?(&1, anagram))
   end
 end
 ```
@@ -129,6 +151,8 @@ defmodule AnagramSolver do
     ["abc", "acb", "bac", "bca", "cab", "cba"]
   """
   def solve(string) do
+    # String.split(string, "", trim: true)
+    # |> Enum.reduce([], fn letter, acc ->)
   end
 end
 ```
