@@ -87,32 +87,33 @@ defmodule Palindrome do
   """
   # 1st Working Attempt
   # 
-  # def palindrome?(string) do
-  #   letters = String.split(string, "", trim: true)
-  #   count = length(letters)
-
-  #   segment_length =
-  #     trunc(
-  #       if rem(count, 2) == 0 do
-  #         count / 2
-  #       else
-  #         (count - 1) / 2
-  #       end
-  #     )
-
-  #   segment1 = Enum.take(letters, segment_length)
-  #   segment2 = Enum.take(letters, -segment_length) |> Enum.reverse()
-
-  #   segment1 == segment2
-  # end
-  #
-  # Example Attempt
   def palindrome?(string) do
-    string
-    |> String.split("")
-    |> Enum.reverse()
-    |> Enum.join() == string
+    letters = String.split(string, "", trim: true)
+    count = length(letters)
+
+    segment_length = div(count, 2)
+    # trunc(
+    #   if rem(count, 2) == 0 do
+    #     count / 2
+    #   else
+    #     (count - 1) / 2
+    #   end
+    # )
+
+    segment1 = Enum.take(letters, segment_length)
+    segment2 = Enum.take(letters, -segment_length) |> Enum.reverse()
+
+    segment1 == segment2
   end
+
+  #
+  # Example Solution
+  # def palindrome?(string) do
+  #   string
+  #   |> String.split("")
+  #   |> Enum.reverse()
+  #   |> Enum.join() == string
+  # end
 end
 ```
 
