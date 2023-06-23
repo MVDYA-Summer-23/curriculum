@@ -133,7 +133,13 @@ defmodule Lucas do
     iex> Lucas.number(20)
     15127
   """
-  def number(n) do
+  # Adapted from Fibonacci, adjusting initial values
+  def number(n), do: number_helper(n, 2, 1)
+
+  defp number_helper(0, a, _b), do: a
+
+  defp number_helper(n, a, b) do
+    number_helper(n - 1, b, a + b)
   end
 
   @doc """
@@ -157,7 +163,24 @@ defmodule Lucas do
     [2, 1, 3, 4, 7, 11, 18, 29, 47, 76]
   """
 
-  def sequence(length) do
+  # Couldn't quite understand the operation
+  # Example Solution
+  def sequence(length) when length == 1 do
+    [2]
+  end
+
+  def sequence(length) when length == 2 do
+    [2, 1]
+  end
+
+  def sequence(length) when length > 2 do
+    {_, _, list} =
+      Enum.reduce(2..(length - 1), {2, 1, [1, 2]}, fn _each, {prev2, prev1, list} ->
+        current = prev2 + prev1
+        {prev1, current, [current | list]}
+      end)
+
+    Enum.reverse(list)
   end
 end
 ```
