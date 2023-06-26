@@ -51,7 +51,48 @@ Ensure your solutions works for both an incorrect and correct player guess.
 Enter your solution below.
 
 ```elixir
+defmodule WordGame do
+  @words [
+    {"dog", "housepet"},
+    {"carrot", "usually orange veggie"},
+    {"ball", "sphere used for exercise and games"}
+  ]
 
+  def start() do
+    IO.puts("Let's play a word guessing game. Are you ready?")
+    ready = IO.gets("y/n: ")
+
+    if ready do
+      {answer, hint} = Enum.random(@words)
+      IO.puts("Okay, so the word has #{String.length(answer)} letters and the hint is: #{hint}")
+
+      case guess_time(answer) do
+        true ->
+          IO.puts("Correct!")
+
+        false ->
+          IO.puts("""
+          Incorrect
+          One last try
+          """)
+
+          (guess_time(answer) && "Correct!") || "Incorrect. Sorry buddy."
+      end
+    else
+      IO.puts("Okay...come back when ready")
+    end
+  end
+
+  defp guess_time(answer) do
+    guess = IO.gets("your guess: ")
+    answer == guess
+  end
+end
+
+# Forgot you can't use IO.gets in a notebook
+answer = "dog"
+guess = "cat"
+(answer == guess && "Correct!") || "Incorrect"
 ```
 
 ## Bonus: Guess The Random Word
@@ -83,7 +124,9 @@ Armed with this knowledge, you're going to create a word guessing game.
 Enter your solution below.
 
 ```elixir
-
+answer = Enum.random(["one", "five", "nine"])
+guess = "five"
+(guess == answer && "Correct!") || "Incorrect"
 ```
 
 ## Bonus: Guess The Number
@@ -135,7 +178,14 @@ Now let's build a number guessing game
 Enter your solution below.
 
 ```elixir
+answer = Enum.random(1..10)
+guess = 4
 
+if answer == guess do
+  "Correct!"
+else
+  (guess > answer && "Too high!") || "Too low!"
+end
 ```
 
 ## Commit Your Progress
