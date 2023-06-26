@@ -62,7 +62,7 @@ defmodule WordGame do
     IO.puts("Let's play a word guessing game. Are you ready?")
     ready = IO.gets("y/n: ")
 
-    if ready do
+    if ready in ["y", "Y", "yes", "Yes"] do
       {answer, hint} = Enum.random(@words)
       IO.puts("Okay, so the word has #{String.length(answer)} letters and the hint is: #{hint}")
 
@@ -84,7 +84,7 @@ defmodule WordGame do
   end
 
   defp guess_time(answer) do
-    guess = IO.gets("your guess: ")
+    guess = IO.gets("your guess: ") |> String.trim()
     answer == guess
   end
 end
