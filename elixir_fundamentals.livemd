@@ -86,11 +86,14 @@ defmodule Grade do
   iex> Grade.letter_grade(51)
   "D"
   """
-  def letter_grade(integer) do
-    Map.filter(@grade_list, fn {_k, v} -> integer in v end)
-    |> Map.keys()
-    |> hd()
-    |> to_string()
+  def letter_grade(score) do
+    # Map.filter(@grade_list, fn {_k, v} -> integer in v end)
+    # |> Map.keys()
+    # |> hd()
+    # |> to_string()
+    Enum.find_value(@grade_list, fn {grade, range} ->
+      if score in range, do: to_string(grade)
+    end)
   end
 
   @doc """
