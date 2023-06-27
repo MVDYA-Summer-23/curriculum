@@ -206,22 +206,19 @@ You're going to use the built-in modules to perform the common CRUD (create, rea
 Update (increment) the `:count` key in this map to return `%{count: 2}`.
 
 ```elixir
-%{count: 1}
-|> Map.update!(:count, &(&1 + 1))
+Map.update!(%{count: 1}, :count, &(&1 + 1))
 ```
 
 Set the `:greeting` key in this map to be `"hi"` instead of `"hello"`.
 
 ```elixir
-%{greeting: "hello"}
-|> Map.update!(:greeting, fn _ -> "hi" end)
+Map.update!(%{greeting: "hello"}, :greeting, fn _ -> "hi" end)
 ```
 
 Delete the `:complete` key from this map to return an empty map.
 
 ```elixir
-%{complete: "task"}
-|> Map.delete(:complete)
+Map.delete(%{complete: "task"}, :complete)
 ```
 
 ### List
@@ -231,22 +228,19 @@ Delete the `:complete` key from this map to return an empty map.
 Delete the `"a"` element in this list.
 
 ```elixir
-["a", "b", "c"]
-|> List.delete("a")
+List.delete(["a", "b", "c"], "a")
 ```
 
 Insert a `"b"` element at index `1` in this list.
 
 ```elixir
-["a", "c"]
-|> List.insert_at(1, "b")
+List.insert_at(["a", "c"], 1, "b")
 ```
 
 Update the element at index `1` in this list to be lowercase.
 
 ```elixir
-["a", "B", "c"]
-|> List.update_at(1, &String.downcase(&1))
+List.update_at(["a", "B", "c"], 1, &String.downcase(&1))
 ```
 
 ### Keyword List
@@ -256,8 +250,7 @@ Update the element at index `1` in this list to be lowercase.
 Delete the `:a` key/value pair in this keyword list.
 
 ```elixir
-[a: 1]
-|> Keyword.delete(:a)
+Keyword.delete([a: 1], :a)
 ```
 
 Insert a `:b` key with the value `2` in this keyword list at index `1` to create `[a: 1, b: 2, c: 3]`. Order does matter.
@@ -270,15 +263,13 @@ Remember that you can use `List` functions such as `List.insert_at/3` with keywo
 </details>
 
 ```elixir
-[a: 1, c: 3]
-|> Keyword.put(:b, 2)
+List.insert_at([a: 1, c: 3], 1, {:b, 2})
 ```
 
 Retrieve the value for the `:label` key in this keyword list of options.
 
 ```elixir
-[label: "some label"]
-|> Keyword.get(:label)
+Keyword.get([label: "some label"], :label)
 ```
 
 ## Strings and Regex
@@ -286,8 +277,7 @@ Retrieve the value for the `:label` key in this keyword list of options.
 Split all of the letters in this string to make `["a", "b", "c"]`.
 
 ```elixir
-"abc"
-|> String.split("", trim: true)
+String.split("abc", "", trim: true)
 ```
 
 Find all of the single digit characters in this string to make `["1", "2", "2", "3"]`
@@ -324,11 +314,8 @@ defmodule Recursion do
   iex> Recursion.sum([1, 2, 3])
   6
   """
-  def sum(list) do
-    sum(list, 0)
-  end
-
-  defp sum([], total), do: total
-  defp sum([h | t], total), do: sum(t, total + h)
+  def sum(_list, acc \\ 0)
+  def sum([], total), do: total
+  def sum([h | t], total), do: sum(t, total + h)
 end
 ```
