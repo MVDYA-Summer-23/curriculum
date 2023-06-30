@@ -127,7 +127,7 @@ MapsOnly.inspect(%{})
 Any non-map data type would crash the function with a [FunctionClauseError](https://hexdocs.pm/elixir/FunctionClauseError.html).
 
 ```elixir
-MapsOnly.inspect("this should crash")
+# MapsOnly.inspect("this should crash")
 ```
 
 We can do the same inside of a `case` statement, or with other data types such as lists.
@@ -152,7 +152,12 @@ We can use the match operator anytime we have a value bound to a parameter or va
 Create a `case` statement that will return the first element in a 2 element tuple, or the first element in 2 element a list.
 
 ```elixir
+bobo = {1, 2}
 
+case bobo do
+  {a, _} -> a
+  _ -> "not found?"
+end
 ```
 
 Use pattern matching to ensure the `Check.must_have_elements!/1` function returns true when called with a list that has more than one element and otherwise causes a [FunctionClauseError](https://hexdocs.pm/elixir/FunctionClauseError.html).
@@ -186,9 +191,7 @@ defmodule Check do
       iex> Check.must_have_elements!([])
       ** (FunctionClauseError) no function clause matching in Check.must_have_elements!/1
   """
-  def must_have_elements!(list) do
-    true
-  end
+  def must_have_elements!([_h | _t]), do: true
 end
 ```
 
@@ -291,8 +294,9 @@ defmodule Greeter do
       iex> Greeter.hello(["Swamy", "Jeff", "Jeremy"])
       "Hello everyone!"
   """
-  def hello(names) do
-  end
+  def hello([name | []]), do: "Hi #{name}!"
+  def hello([name, other]), do: "Hi #{name}, Hello #{other}!"
+  def hello([_ | _]), do: "Hello everyone!"
 end
 ```
 
@@ -354,7 +358,12 @@ end)
 </details>
 
 ```elixir
+list = [{:double, 2}, {:halve, 10}, {:double, 4}]
 
+Enum.map(list, fn
+  {:double, n} -> n * 2
+  {:halve, n} -> div(n, 2)
+end)
 ```
 
 ## Pattern Matching Vs. If
@@ -523,7 +532,7 @@ actual = {"hello", "hi"}
 expected = {"hello"}
 actual = {"hello", "hi"}
 
-expected = actual
+^expected = actual
 ```
 
 ## Further Reading
