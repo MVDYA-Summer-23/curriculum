@@ -223,6 +223,7 @@ Enter your solution below.
 aragorn = %Character{name: "Aragorn", class: "ranger", weapon: "sword"}
 wizard = %Character{name: "Gandalf", class: "wizard", weapon: "staff"}
 Character.class(wizard)
+
 gimli = %Character{name: "Gimli", class: "warrior", weapon: "axe"}
 Character.introduce(gimli)
 ```
