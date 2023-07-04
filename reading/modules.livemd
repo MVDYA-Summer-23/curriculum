@@ -128,7 +128,7 @@ MultiParamExample.call(
   Enum.random(1..100)
 )
 
-# MultiParamExample.call(1,2,3)
+MultiParamExample.call(1, 2, 3)
 ```
 
 ## Internal Module Functions
@@ -451,6 +451,8 @@ defmodule ModuleScope2 do
     module_scope
   end
 end
+
+ModuleScope2.function_scope()
 ```
 
 To use a variable, it must be bound in the same scope.
@@ -727,25 +729,25 @@ If this is the case, you either have to fix your code, or remove/comment the cra
 Uncomment the following code and evaluate the cell to see an example. Re-comment your code to avoid crashing the livebook as you continue with the lesson.
 
 ```elixir
-# defmodule DoctestCrash Do
-# @moduledoc """
-# DoctestCrash
+defmodule DoctestCrash do
+  @moduledoc """
+  DoctestCrash
 
-# Explains Doctest Crashes With Examples
-# """
+  Explains Doctest Crashes With Examples
+  """
 
-# @doc """
-# Purposely Crashes Doctest Using Invalid Pattern Matching
+  @doc """
+  Purposely Crashes Doctest Using Invalid Pattern Matching
 
-# ## Examples
+  ## Examples
 
-# iex> {} = DoctestCrash.crash()
-# "2"
-# """
-# def crash do
-
-# end
-# end
+    iex> {} = DoctestCrash.crash()
+    {}
+  """
+  def crash do
+    {}
+  end
+end
 ```
 
 ### Your Turn
