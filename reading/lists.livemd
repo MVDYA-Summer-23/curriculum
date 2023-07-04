@@ -107,7 +107,7 @@ flowchart
 In the Elixir cell below, Create a list of your favourite foods as strings.
 
 ```elixir
-["pizza", "broccoli", "chicken", "quesadillas"]
+["pizza", "broccoli", "chicken", "quesadillas", "tacos"]
 ```
 
 ## List Operators
