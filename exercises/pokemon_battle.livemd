@@ -116,6 +116,10 @@ end
 
 ```elixir
 defmodule Pokemon do
+  @attack_types %{
+    strong: %{advantage: 2, combos: [{:fire, :grass}, {:grass, :water}, {:water, :fire}]},
+    weak: %{advantage: 0.5, combos: [{:fire, :water}, {:grass, :fire}, {:water, :grass}]}
+  }
   @moduledoc """
   Pokemon
 
@@ -125,9 +129,31 @@ defmodule Pokemon do
       iex> Pokemon.attack(attacker, defender)
       %Pokemon{name: "Bulbasaur", type: :grass, health: 10.0, attack: 5, speed: 20}
   """
-  defstruct []
+  defstruct [:name, :type, :speed, health: 20.0, attack: 5]
 
-  def attack(attacker, defender) do
+  @type pokemon :: %__MODULE__{
+          name: String.t(),
+          type: :grass | :water | :fire,
+          health: float(),
+          attack: integer(),
+          speed: integer()
+        }
+
+  def attack(%{type: same} = _ = %Pokemon{}, %{type: same} = defender = %Pokemon{}) do
+    defender
+  end
+
+  def attack(attacker = %Pokemon{}, defender = %Pokemon{}) do
+    combo = {attacker.type, defender.type}
+    attack_type = Enum.find_value(@attack_types, fn {k, v} -> combo in v.combos && k end)
+
+    update_health(defender, attack_type, attacker.attack)
+  end
+
+  defp update_health(pokemon, attack_type, attacker_strength) do
+    Map.update!(pokemon, :health, fn h ->
+      h - attacker_strength * @attack_types[attack_type].advantage
+    end)
   end
 end
 ```
@@ -135,7 +161,12 @@ end
 Consider using the following Elixir cell to test your solution.
 
 ```elixir
+attacker = %Pokemon{name: "Charmander", type: :fire, health: 20.0, attack: 5, speed: 20}
+defender = %Pokemon{name: "Bulbasaur", type: :grass, health: 20.0, attack: 5, speed: 20}
 
+updated = %Pokemon{name: "Bulbasaur", type: :grass, health: 10.0, attack: 5, speed: 20}
+# Applies 5 * 2 Damage. Original Health: 20.0, New Health: 10.0.
+updated == Pokemon.attack(attacker, defender)
 ```
 
 ### Pokemon Instances
@@ -186,7 +217,18 @@ Pokemon.attack(charmander, bulbasaur)
 Enter your solution below.
 
 ```elixir
+charmander = %Pokemon{name: "Charmander", type: :fire, health: 20.0, attack: 5, speed: 20}
+bulbasaur = %Pokemon{name: "Bulbasaur", type: :grass, health: 20.0, attack: 5, speed: 20}
+squirtle = %Pokemon{name: "Squirtle", type: :water, health: 20.0, attack: 5, speed: 20}
 
+[
+  Pokemon.attack(charmander, bulbasaur),
+  Pokemon.attack(bulbasaur, charmander),
+  Pokemon.attack(charmander, squirtle),
+  Pokemon.attack(squirtle, charmander),
+  Pokemon.attack(bulbasaur, squirtle),
+  Pokemon.attack(squirtle, bulbasaur)
+]
 ```
 
 ## Commit Your Progress
