@@ -72,6 +72,9 @@ defmodule Replace do
   [1, 2, 3, 4, "5"]
   """
   def nils(list1, list2) do
+    Enum.zip(list1, list2)
+    |> Enum.reduce([], fn {l1, l2}, acc -> if is_nil(l1), do: [l2 | acc], else: [l1 | acc] end)
+    |> Enum.reverse()
   end
 end
 ```
