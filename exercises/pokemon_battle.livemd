@@ -116,10 +116,9 @@ end
 
 ```elixir
 defmodule Pokemon do
-  @attack_types %{
-    strong: %{advantage: 2, combos: [{:fire, :grass}, {:grass, :water}, {:water, :fire}]},
-    weak: %{advantage: 0.5, combos: [{:fire, :water}, {:grass, :fire}, {:water, :grass}]}
-  }
+  @strong_attacks %{advantage: 2, combos: [{:fire, :grass}, {:grass, :water}, {:water, :fire}]}
+  @weak_attacks %{advantage: 0.5, combos: [{:fire, :water}, {:grass, :fire}, {:water, :grass}]}
+  @attacks [@strong_attacks, @weak_attacks]
   @moduledoc """
   Pokemon
 
@@ -131,7 +130,7 @@ defmodule Pokemon do
   """
   defstruct [:name, :type, :speed, health: 20.0, attack: 5]
 
-  @type pokemon :: %__MODULE__{
+  @type t :: %__MODULE__{
           name: String.t(),
           type: :grass | :water | :fire,
           health: float(),
@@ -145,14 +144,19 @@ defmodule Pokemon do
 
   def attack(attacker = %Pokemon{}, defender = %Pokemon{}) do
     combo = {attacker.type, defender.type}
-    attack_type = Enum.find_value(@attack_types, fn {k, v} -> combo in v.combos && k end)
 
-    update_health(defender, attack_type, attacker.attack)
+    attack_strength =
+      @attacks
+      |> Enum.find_value(fn attack -> if combo in attack.combos, do: attack.advantage end)
+
+    damage = attacker.attack * attack_strength
+
+    update_health(defender, damage)
   end
 
-  defp update_health(pokemon, attack_type, attacker_strength) do
+  defp update_health(pokemon, damage) do
     Map.update!(pokemon, :health, fn h ->
-      h - attacker_strength * @attack_types[attack_type].advantage
+      h - damage
     end)
   end
 end
