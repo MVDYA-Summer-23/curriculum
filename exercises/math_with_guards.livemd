@@ -120,10 +120,21 @@ defmodule Math do
   ** (FunctionClauseError) no function clause matching in Math.add/2
   """
 
-  def add(value1, value2) do
-  end
+  defguard both_string(a, b) when is_binary(a) and is_binary(b)
+  defguard both_integer(a, b) when is_integer(a) and is_integer(b)
+  defguard both_list(a, b) when is_list(a) and is_list(b)
 
-  def subtract(value1, value2) do
+  def add(a, b) when both_integer(a, b), do: a + b
+  def add(a, b) when both_string(a, b), do: a <> b
+  def add(a, b) when both_list(a, b), do: a ++ b
+
+  def subtract(a, b) when both_integer(a, b), do: a - b
+  def subtract(a, b) when both_list(a, b), do: a -- b
+
+  def subtract(a, b) when both_string(a, b) do
+    String.graphemes(a)
+    |> subtract(String.graphemes(b))
+    |> Enum.join()
   end
 end
 ```
