@@ -139,7 +139,7 @@ File.ls()
 To clean up the file, uncomment the following code which should remove it.
 
 ```elixir
-# File.rm("file.txt")
+File.rm("file.txt")
 ```
 
 Now the file should no longer exist. Let's check with [File.exists?/2](https://hexdocs.pm/elixir/File.html#exists?/2).
@@ -157,7 +157,10 @@ DO NOT DELETE IMPORTANT FILES ON YOUR SYSTEM WHEN USING THE FILE MODULE
 </div>
 
 ```elixir
-
+File.cd("design")
+File.cd("water-palms")
+File.ls!()
+File.open!("water-boat-palms-02-photo.jpg")
 ```
 
 ## Path Module Functions
@@ -197,7 +200,17 @@ Path.join(path1, path2)
 Experiment with the functions above. Refer to the documentation for examples you can try.
 
 ```elixir
+Path.dirname("/yo/boy")
+Path.absname('')
 
+Path.join('1/2/3', '4/5/6')
+|> Path.split()
+
+# Path.wildcard()
+# File.touch('yo.txt')
+File.ls!()
+files = Path.wildcard("*.txt")
+IO.inspect(files)
 ```
 
 ## Bang Functions
