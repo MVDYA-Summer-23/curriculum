@@ -349,6 +349,7 @@ Process.whereis(:keyword_list_example)
 defmodule NamedState do
   use GenServer
 
+  # Client
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
     init = Keyword.get(opts, :init, nil)
