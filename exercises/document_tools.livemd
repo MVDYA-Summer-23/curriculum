@@ -79,6 +79,7 @@ end
 
 ```elixir
 defmodule Document do
+  @exercises '/Users/mvellandi/coding/da/curriculum/exercises/documents'
   @moduledoc """
   Documentation for `Document` module.
   """
@@ -101,6 +102,17 @@ defmodule Document do
       3
   """
   def word_count(file_name) do
+    File.cd!(@exercises)
+
+    case File.read(file_name) do
+      {:ok, content} ->
+        content
+        |> String.split()
+        |> Enum.count()
+
+      {:error, _reason} ->
+        {:error, "Could not read file #{file_name}"}
+    end
   end
 
   @doc ~S"""
@@ -113,6 +125,13 @@ defmodule Document do
       3
   """
   def line_count(file_name) do
+    File.cd!(@exercises)
+
+    case File.stream!(file_name) do
+      stream ->
+        stream
+        |> Enum.count()
+    end
   end
 
   @doc ~S"""
@@ -126,6 +145,16 @@ defmodule Document do
       "1. one\n2. two\n3. three"
   """
   def add_line_numbers(file_name) do
+    case File.stream!(file_name) do
+      stream ->
+        numbered_lines =
+          stream
+          |> Stream.with_index(1)
+          |> Stream.map(fn {line, index} -> "#{index}. #{String.trim(line)}" end)
+          |> Enum.to_list()
+
+        File.write!(file_name, Enum.join(numbered_lines, "\n"))
+    end
   end
 end
 ```
