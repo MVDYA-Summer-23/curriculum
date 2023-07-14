@@ -203,7 +203,12 @@ end)
 </details>
 
 ```elixir
-
+1_234_321
+|> to_string()
+|> String.graphemes()
+|> Enum.reduce(%{}, fn int, acc ->
+  Map.update(acc, String.to_integer(int), 1, &(&1 + 1))
+end)
 ```
 
 ## Multiple Accumulators
