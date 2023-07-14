@@ -150,9 +150,20 @@ defmodule AnagramSolver do
     iex> AnagramSolver.solve("abc")
     ["abc", "acb", "bac", "bca", "cab", "cba"]
   """
+
+  # Thanks GPT-4
   def solve(string) do
-    # String.split(string, "", trim: true)
-    # |> Enum.reduce([], fn letter, acc ->)
+    string
+    |> String.graphemes()
+    |> permutations()
+    |> Enum.map(&Enum.join/1)
+    |> Enum.uniq()
+  end
+
+  defp permutations([]), do: [[]]
+
+  defp permutations(list) do
+    for elem <- list, rest <- permutations(list -- [elem]), do: [elem | rest]
   end
 end
 ```
