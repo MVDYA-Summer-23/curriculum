@@ -85,8 +85,10 @@ defmodule Factorial do
     iex> Factorial.of(10)
     3628800
   """
-  def of(n) do
-  end
+  def of(1), do: 1
+  def of(n), do: of(n - 1, n * 1)
+  defp of(0, factored), do: factored
+  defp of(n, factored), do: of(n - 1, factored * n)
 end
 ```
 
