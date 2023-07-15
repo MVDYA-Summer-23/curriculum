@@ -123,30 +123,29 @@ defmodule Timeline do
 
   # 1st Attempt
 
-  # def from_dates(dates) when is_list(dates) and length(dates) == 1, do: []
-  # def from_dates(dates) do
-  #   Enum.reduce(dates, {nil, []}, fn next_date, date_tracker ->
-  #     # IO.inspect(date_tracker)
-  #     case date_tracker do
-  #       {nil, []} -> {next_date, []}
-  #       {prev_date, []} -> {next_date, [Date.diff(next_date, prev_date)]}
-  #       {prev_date, [h | []]} -> {next_date, [Date.diff(next_date, prev_date) | [h]]}
-  #       {prev_date, ls} -> {next_date, [Date.diff(next_date, prev_date) | ls]}
-  #     end
-  #   end)
-  #   |> elem(1)
-  #   |> Enum.reverse()
-  # end
-
-  # Official Solution using chunk
-
   def from_dates(dates) do
-    Enum.chunk_every(dates, 2, 1, :discard)
-    |> Enum.map(fn chunk ->
-      [start, finish] = chunk
-      Date.diff(finish, start)
+    Enum.reduce(dates, {nil, []}, fn next_date, date_tracker ->
+      case date_tracker do
+        {nil, []} -> {next_date, []}
+        {[], []} -> {next_date, []}
+        {prev_date, []} -> {next_date, [Date.diff(next_date, prev_date)]}
+        {prev_date, [h | []]} -> {next_date, [Date.diff(next_date, prev_date) | [h]]}
+        {prev_date, ls} -> {next_date, [Date.diff(next_date, prev_date) | ls]}
+      end
     end)
+    |> elem(1)
+    |> Enum.reverse()
   end
+
+  # Example Solution using chunk
+
+  # def from_dates(dates) do
+  #   Enum.chunk_every(dates, 2, 1, :discard)
+  #   |> Enum.map(fn chunk ->
+  #     [start, finish] = chunk
+  #     Date.diff(finish, start)
+  #   end)
+  # end
 
   @doc """
   Given a list of "YYYY-MM-DD" strings return a timeline of days between each date.
