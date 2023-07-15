@@ -95,6 +95,7 @@ defmodule TimeConverter do
       :minutes -> amount * 60
       :hours -> amount * 60 * 60
       :days -> amount * 60 * 60 * 24
+      _ -> "Invalid unit. Try again with either :seconds, :minutes, :hours, or :days"
     end
   end
 
