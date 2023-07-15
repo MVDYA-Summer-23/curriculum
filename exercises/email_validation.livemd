@@ -5,7 +5,8 @@ Mix.install([
   {:jason, "~> 1.4"},
   {:kino, "~> 0.9", override: true},
   {:youtube, github: "brooklinjazz/youtube"},
-  {:hidden_cell, github: "brooklinjazz/hidden_cell"}
+  {:hidden_cell, github: "brooklinjazz/hidden_cell"},
+  {:email_checker, "~> 0.2.4"}
 ])
 ```
 
@@ -104,7 +105,12 @@ defmodule Email do
     iex> Email.valid?("string@string.")
     false
   """
-  def valid?(email) do
+  def valid?(email) when is_binary(email) do
+    Regex.match?(~r/^(.+)@(.+)\.(.+)/, email)
+  end
+
+  def valid2?(email) do
+    EmailChecker.Check.Format.valid?(email)
   end
 end
 ```
